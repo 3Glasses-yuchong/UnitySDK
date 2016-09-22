@@ -202,7 +202,7 @@ namespace ThreeGlasses
         public static Quaternion GetCameraOrientation()
         {
             var rotation = Quaternion.identity;
-            var inputs = new[] {1.0f, Time.deltaTime * 1000};
+            var inputs = new[] {1.0f, 0};
 
             var result = new float[4];
             if (!SZVR_GetData(inputs, result)) return rotation;

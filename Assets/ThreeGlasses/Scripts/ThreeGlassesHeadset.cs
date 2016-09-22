@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using UnityEngine;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeTypeMemberModifiers
@@ -19,12 +20,20 @@ namespace ThreeGlasses
         private const int RenderWidth = 2880;
         private const int RenderHeight = 1440;
 
-
         [DllImport("SZVRCompositorPlugin")]
-        private static extern void UpdateTextureFromUnity(System.IntPtr leftIntPtr, System.IntPtr rigthIntPtr);
+        private static extern void UpdateTextureFromUnity(
+            System.IntPtr leftIntPtr, System.IntPtr rigthIntPtr);
 
         [DllImport("SZVRCompositorPlugin")]
         private static extern System.IntPtr GetRenderEventFunc();
+
+        [DllImport("SZVRCompositorPlugin")]
+        public static extern void ResetHMD();
+
+        public void ResetHMD_Rotation()
+        {
+            ResetHMD();
+        }
 
         public bool EnableHeadRotTracking = true;
         public bool EnableHeadPosTracking = false;
@@ -52,11 +61,13 @@ namespace ThreeGlasses
             {
                 if (_leftRenderTexture != null && _rightRenderTexture != null) return;
 
-                _leftRenderTexture = new RenderTexture(RenderWidth/2, RenderHeight, 24,
+                _leftRenderTexture = new RenderTexture(RenderWidth/2,
+                    RenderHeight, 24,
                     RenderTextureFormat.ARGBFloat,
                     RenderTextureReadWrite.Default);
 
-                _rightRenderTexture = new RenderTexture(RenderWidth/2, RenderHeight, 24,
+                _rightRenderTexture = new RenderTexture(RenderWidth/2,
+                    RenderHeight, 24,
                     RenderTextureFormat.ARGBFloat,
                     RenderTextureReadWrite.Default);
 
@@ -64,7 +75,7 @@ namespace ThreeGlasses
                 rightCamera.SetRenderTarget(_rightRenderTexture);
 
                 upTexture = false;
-                
+
             }, new WaitForEndOfFrame()));
         }
 
